@@ -23,14 +23,14 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript", "plugin:eslint-config-airbnb", "plugin:eslint-config-airbnb-typescript", "plugin:prettier/prettier"],
+      "extends": ["plugin:@nrwl/nx/typescript", "plugin:prettier/prettier"],
       "rules": {
         "linebreak-style":"off"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript", "plugin:eslint-config-airbnb"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {
         "linebreak-style": "off"
       }
