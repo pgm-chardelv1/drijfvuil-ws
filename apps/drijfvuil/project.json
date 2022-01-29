@@ -1,0 +1,96 @@
+{
+  "root": "apps/drijfvuil",
+  "sourceRoot": "apps/drijfvuil/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/drijfvuil",
+        "index": "apps/drijfvuil/src/index.html",
+        "baseHref": "/",
+        "main": "apps/drijfvuil/src/main.tsx",
+        "polyfills": "apps/drijfvuil/src/polyfills.ts",
+        "tsConfig": "apps/drijfvuil/tsconfig.app.json",
+        "assets": [
+          "apps/drijfvuil/src/favicon.ico",
+          "apps/drijfvuil/src/manifest.json",
+          "apps/drijfvuil/src/browserconfig.xml",
+          "apps/drijfvuil/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/drijfvuil/src/environments/environment.ts",
+              "with": "apps/drijfvuil/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "drijfvuil:build",
+        "hmr": true,
+        "proxyConfig": "apps/drijfvuil/proxy.conf.json"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "drijfvuil:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/drijfvuil/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/drijfvuil"],
+      "options": {
+        "jestConfig": "apps/drijfvuil/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "pwa": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "rimraf ./dist/apps/drijfvuil/service-worker.js && webpack --config ./apps/drijfvuil/webpack.prod.config.js --progress && node ./apps/drijfvuil/workbox-build-inject.js"
+      }
+    },
+    "generate-docs": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx compodoc -p ./apps/drijfvuil/tsconfig.json -d dist/docs/frontend -r 80",
+        "color": true
+      }
+    }
+  },
+  "tags": ["type:app", "scope:frontend"]
+}

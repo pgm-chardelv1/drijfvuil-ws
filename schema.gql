@@ -1,0 +1,382 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """User ID"""
+  id: String!
+
+  """User email"""
+  email: String!
+
+  """User password"""
+  password: String!
+}
+
+type Report {
+  """Report ID"""
+  id: Int!
+
+  """Report created at [DATE]"""
+  createdAt: DateTime!
+
+  """Report updated at [DATE]"""
+  updatedAt: DateTime!
+
+  """
+  Latitude and longitude of the report as a latitude longitude tuple. Example: [51.11321,16.18646]
+  """
+  latLngTuple: [Float!]!
+
+  """The postal code for the city the report is made in"""
+  cityId: Int!
+
+  """The city the report was made in"""
+  city: City!
+
+  """ID for the quarter the report is made in"""
+  quarterId: Int
+
+  """The quarter the report was made in"""
+  quarter: Quarter
+
+  """Image for this report"""
+  image: Image
+
+  """ID for the image"""
+  imageId: String
+
+  """Extra information for the report"""
+  extra: String
+
+  """Is this report for litter in the water or on land?"""
+  locationType: String!
+
+  """Type of litter report is for"""
+  litterType: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Image {
+  """Image ID"""
+  id: String!
+
+  """Image URL"""
+  url: String
+
+  """Image Key"""
+  key: String!
+
+  """Image was created at"""
+  createdAt: DateTime!
+
+  """Image last updated at"""
+  updatedAt: DateTime!
+
+  """The report the image is linked to"""
+  report: Report
+  quarter: Quarter
+  city: City
+}
+
+type Quarter {
+  """City Postal code"""
+  cityId: Int!
+
+  """Quarter ID"""
+  id: Int!
+
+  """Quarter name"""
+  quarter: String!
+
+  """Polygon for the quarter."""
+  polygon: [Float!]!
+
+  """Reports in this quarter"""
+  reports: [Report!]
+
+  """Images in this quarter"""
+  images: [Image!]
+
+  """The city this quarter is in"""
+  city: City!
+
+  """Cleanups that took place in this quarter"""
+  cleanups: [Cleanup!]
+}
+
+type Cleanup {
+  """Cleanup ID"""
+  id: Int!
+
+  """Cleanup created at [DATE]"""
+  createdAt: DateTime!
+
+  """Report ID"""
+  reportId: Int!
+
+  """Cleanup type? Partial? Full?"""
+  type: String!
+
+  """Cleanup location"""
+  location: [Float!]!
+
+  """City ID where cleanup took place"""
+  cityId: Int!
+
+  """Quarter ID where cleanup took place"""
+  quarterId: Int
+
+  """City where cleanup took place"""
+  city: City!
+
+  """Quarter where cleanup took place"""
+  quarter: Quarter
+}
+
+type City {
+  """Postal code"""
+  id: Int!
+
+  """City name"""
+  name: String!
+
+  """Polygon of latitude longitude expressions"""
+  polygon: String!
+
+  """Reports in this city"""
+  reports: [Report!]
+
+  """Quarters in this city"""
+  quarters: [Quarter!]
+
+  """Images in this city"""
+  images: [Image!]
+
+  """Cleanups that took place in this city"""
+  cleanups: [Cleanup!]
+}
+
+type Query {
+  user(id: String!): User!
+  users: [User!]!
+  city(id: Int!): City!
+  cities: [City!]!
+  cleanup(id: Int!): Cleanup!
+  cleanups: [Cleanup!]!
+  quarter(id: Int!): Quarter!
+  quarters: [Quarter!]!
+  image(id: String!): Image!
+  images: [Image!]!
+  report(id: Int!): Report!
+  reports: [Report!]!
+}
+
+type Mutation {
+  login(user: LoginUserDto!): User!
+  register(password: String!, email: String!): User!
+  createUser(createUserDto: CreateUserDto!): User!
+  updateUser(updateUserInput: UpdateUserDto!): User!
+  deleteUser(id: String!): User!
+  createCity(createCityInput: CreateCityDto!): City!
+  updateCity(updateCityInput: UpdateCityDto!): City!
+  deleteCity(id: Int!): City!
+  createCleanup(createCleanupInput: CreateCleanupDto!): Cleanup!
+  updateCleanup(updateCleanupInput: UpdateCleanupDto!): Cleanup!
+  deleteCleanup(id: Int!): Cleanup!
+  createQuarter(createQuarterInput: CreateQuarterDto!): Quarter!
+  updateQuarter(updateQuarterInput: UpdateQuarterDto!): Quarter!
+  deleteQuarter(id: Int!): Quarter!
+  createImage(createImageInput: CreateImageDto!): Image!
+  updateImage(updateImageInput: UpdateImageDto!): Image!
+  deleteImage(id: String!): Image!
+  getPresignedImageUrl(updateImageInput: UpdateImageDto!): Image!
+  createReport(createReportInput: CreateReportDto!): Report!
+  updateReport(updateReportInput: UpdateReportDto!): Report!
+  deleteReport(id: Int!): Report!
+  deleteManyReports(ids: [Int!]!): Report!
+  handleFullCleanup(id: Int!): Report!
+}
+
+input LoginUserDto {
+  """User email"""
+  email: String!
+
+  """User password"""
+  password: String!
+}
+
+input CreateUserDto {
+  """User email address. Has to be a valid email. Can't be empty."""
+  email: String!
+
+  """
+  User password. Has to be minimum 8 characters, maximum 42 characters. Can't be empty.
+  """
+  password: String!
+}
+
+input UpdateUserDto {
+  """User email address. Has to be a valid email. Can't be empty."""
+  email: String
+
+  """
+  User password. Has to be minimum 8 characters, maximum 42 characters. Can't be empty.
+  """
+  password: String
+
+  """ID for the user. Has to be a valid UUID."""
+  id: String!
+}
+
+input CreateCityDto {
+  """Postal code"""
+  id: Int!
+
+  """City name"""
+  name: String!
+
+  """City limits as polygon json string"""
+  polygon: String!
+}
+
+input UpdateCityDto {
+  """Postal code"""
+  id: Int!
+
+  """City name"""
+  name: String
+
+  """City limits as polygon json string"""
+  polygon: String
+}
+
+input CreateCleanupDto {
+  """Cleanup for report with ID"""
+  reportId: Int!
+
+  """
+  Cleanup type? "partial" or "full"
+  """
+  type: String!
+
+  """Latitude and longitude of the cleanup."""
+  location: [Float!]!
+
+  """City ID where cleanup took place"""
+  cityId: Int!
+
+  """Cleanup in this quarter"""
+  quarterId: Int
+}
+
+input UpdateCleanupDto {
+  """Cleanup for report with ID"""
+  reportId: Int
+
+  """
+  Cleanup type? "partial" or "full"
+  """
+  type: String
+
+  """Latitude and longitude of the cleanup."""
+  location: [Float!]
+
+  """City ID where cleanup took place"""
+  cityId: Int
+
+  """Cleanup in this quarter"""
+  quarterId: Int
+  id: Int!
+}
+
+input CreateQuarterDto {
+  """ID of the quarter"""
+  id: Int!
+
+  """Name of the quarter"""
+  quarter: String!
+
+  """Polygon of the quarter"""
+  polygon: [Float!]!
+}
+
+input UpdateQuarterDto {
+  id: Int!
+
+  """Name of the quarter"""
+  quarter: String
+
+  """Polygon of the quarter"""
+  polygon: [Float!]
+}
+
+input CreateImageDto {
+  """URL where the image is located"""
+  url: String
+
+  """File name of the image"""
+  key: String!
+}
+
+input UpdateImageDto {
+  """URL where the image is located"""
+  url: String
+
+  """File name of the image"""
+  key: String
+
+  """ID for the image"""
+  id: String!
+}
+
+input CreateReportDto {
+  """Latitude and longitude of the report. Example: [51.156416,16.615456]"""
+  latLngTuple: [Float!]!
+
+  """The postal code for the city the report is made in"""
+  cityId: Int!
+
+  """The ID for the quarter the report is made in"""
+  quarterId: Int!
+
+  """Images for this report"""
+  imageId: String
+
+  """Extra information"""
+  extra: String
+
+  """Is this report for litter found in the water or on land?"""
+  locationType: String = "water"
+
+  """Type of litter the report is for"""
+  litterType: String
+}
+
+input UpdateReportDto {
+  """Latitude and longitude of the report. Example: [51.156416,16.615456]"""
+  latLngTuple: [Float!]
+
+  """The postal code for the city the report is made in"""
+  cityId: Int
+
+  """The ID for the quarter the report is made in"""
+  quarterId: Int
+
+  """Images for this report"""
+  imageId: String
+
+  """Extra information"""
+  extra: String
+
+  """Is this report for litter found in the water or on land?"""
+  locationType: String = "water"
+
+  """Type of litter the report is for"""
+  litterType: String
+  id: Int!
+}

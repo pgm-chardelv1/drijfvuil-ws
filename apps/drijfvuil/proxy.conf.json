@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://drijfvuil-api.onrender.com/drijfvuil",
+    "secure": false
+  }
+}

@@ -1,0 +1,67 @@
+previewsEnabled: true
+previewsExpireAfterDays: 1
+
+services:
+# The server
+- type: web
+  name: drijf-api
+  env: node
+  region: oregon
+  plan: starter
+  branch: main
+  buildCommand: npm i; npx nx build api
+  startCommand: yarn start api
+
+  envVars:
+  - key: PORT
+    value: 4000
+  - key: EXAMPLE_GENERATE_SECRET
+    generateValue: true
+  - key: EXAMPLE_NO_SYNC
+    sync: false
+  - key: JWT_SECRET
+    generateValue: true
+  - key: BCRYPT_SALT_ROUNDS
+    value: 12
+  - key: DB_HOST
+    fromDatabase:
+      name: drijf-prod
+      property: host
+  - key: DB_PORT
+    fromDatabase:
+      name: drijf-prod
+      property: port
+  - key: DB_USERNAME
+    fromDatabase:
+      name: drijf-prod
+      property: user
+  - key: DB_PASSWORD
+    fromDatabase:
+      name: drijf-prod
+      property: password
+  - key: DB_DATABASE_NAME
+    fromDatabase:
+      name: drijf-prod
+      property: database
+
+# The client
+- type: web
+  name: drijf
+  env: static
+  buildCommand: npx nx build drijfvuil; npx nx run drijfvuil:pwa
+  staticPublishPath: ./dist/apps/drijfvuil
+
+# The documentation
+- type: web
+  name: drijf-docs-api
+  env: static
+  buildCommand: npx nx run api:generate-docs
+  staticPublishPath: ./dist/docs/api
+
+
+
+# The databases
+databases:
+- name: drijf-prod
+  databaseName: drijf_production
+  user: drijf_production_user

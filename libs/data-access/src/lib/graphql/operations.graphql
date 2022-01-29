@@ -1,0 +1,145 @@
+query reportList {
+  reports {
+    id
+    latLngTuple
+    city {
+      name
+    }
+    quarter {
+      quarter
+      id
+    }
+    imageId
+    extra
+    createdAt
+    locationType
+    litterType
+  }
+}
+
+query report($id: Int!) {
+  report(id: $id) {
+    id
+    latLngTuple
+    city {
+      name
+    }
+    quarter {
+      quarter
+      id
+    }
+    imageId
+    extra
+    createdAt
+    locationType
+    litterType
+  }
+}
+
+
+mutation createReport($createReportInput: CreateReportDto!) {
+    createReport(createReportInput: $createReportInput) {
+        id,
+        createdAt,
+    }
+}
+
+mutation createImage($createImageInput: CreateImageDto!) {
+  createImage(createImageInput: $createImageInput) {
+    id,
+    key,
+  }
+}
+
+mutation updateReport($updateReportInput: UpdateReportDto!) {
+  updateReport(updateReportInput: $updateReportInput) {
+    id,
+    updatedAt,
+  }
+}
+
+mutation handleFullCleanup($id: Int!) {
+  handleFullCleanup(id: $id) {
+    id,
+    latLngTuple,
+  }
+}
+
+
+query imageList {
+  images {
+    id,
+    key,
+  }
+}
+
+query image($id: String!) {
+  image(id: $id) {
+    id,
+    key,
+  }
+}
+
+mutation getPresignedImageUrl($updateImageInput: UpdateImageDto!) {
+  getPresignedImageUrl(updateImageInput: $updateImageInput)
+  {
+    key,
+    url,
+  }
+}
+
+
+query quarterList {
+  quarters {
+    id,
+    quarter,
+    polygon,
+  }
+}
+
+query quarter($id: Int!) {
+  quarter(id: $id) {
+    id,
+    quarter, 
+    polygon,
+  }
+}
+
+query cityList {
+  cities {
+    id,
+    name,
+    polygon,
+  }
+}
+
+query city($id: Int!) {
+  city(id: $id) {
+    id, 
+    name,
+    polygon,
+  }
+}
+
+query cleanupList {
+  cleanups {
+    id,
+    createdAt,
+    type,
+    location,
+    cityId,
+    quarterId,
+  }
+}
+
+query cleanup($id: Int!) {
+  cleanup(id: $id) {
+    id,
+    createdAt,
+    type,
+    location,
+    cityId,
+    quarterId,
+  }
+}
+

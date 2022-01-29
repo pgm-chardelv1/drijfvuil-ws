@@ -1,0 +1,28 @@
+{
+  "root": "apps/drijfvuil-e2e",
+  "sourceRoot": "apps/drijfvuil-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/drijfvuil-e2e/cypress.json",
+        "devServerTarget": "drijfvuil:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "drijfvuil:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/drijfvuil-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["drijfvuil"]
+}
