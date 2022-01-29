@@ -1,6 +1,6 @@
 {
   "name": "drijfvuil-ws",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
