@@ -23,13 +23,17 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript", "plugin:prettier/recommended"],
-      "rules": {}
+      "extends": ["plugin:@nrwl/nx/typescript", "plugin:eslint-plugin-prettier", "plugin:eslint-config-airbnb", "plugin:eslint-config-airbnb-typescript"],
+      "rules": {
+        "linebreak-style":"off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
+      "extends": ["plugin:@nrwl/nx/javascript", "plugin:eslint-plugin-prettier", "plugin:eslint-config-airbnb"],
+      "rules": {
+        "linebreak-style": "off"
+      }
     }
   ]
 }

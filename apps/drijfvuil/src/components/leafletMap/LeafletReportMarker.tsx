@@ -13,20 +13,17 @@ interface LeafletMarkerProps {
 
 const reportIcon = new Icon({
   iconUrl: reportGreen,
-  iconSize: [25,41],
+  iconSize: [25, 41],
   iconAnchor: [12, 40],
   shadowUrl: iconShadow,
   shadowSize: [41, 41],
   shadowAnchor: [12, 40],
 });
 
-function LeafletReportMarker({position, report}: LeafletMarkerProps) {
+function LeafletReportMarker({ position, report }: LeafletMarkerProps) {
   return (
-    <Marker 
-      position={position}
-      icon={reportIcon}
-    >
-      <LeafletPopUp report={report}/>
+    <Marker position={position} icon={reportIcon}>
+      <LeafletPopUp report={report} />
     </Marker>
   );
 }

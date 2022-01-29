@@ -33,7 +33,10 @@ export function App() {
     dispatch,
   );
 
-  const { setReports } = bindActionCreators(actionCreators.reportsActionCreators, dispatch);
+  const { setReports } = bindActionCreators(
+    actionCreators.reportsActionCreators,
+    dispatch,
+  );
 
   const { loading, error, data } = useQuery(ReportListDocument);
   const reports: Report[] = data?.reports?.map((r: Report) => r);
@@ -42,7 +45,10 @@ export function App() {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const newCoordinates: LatLngExpression = [pos.coords.latitude, pos.coords.longitude];
+        const newCoordinates: LatLngExpression = [
+          pos.coords.latitude,
+          pos.coords.longitude,
+        ];
 
         setUserPosition(newCoordinates);
       },
@@ -53,7 +59,12 @@ export function App() {
   });
 
   if (loading)
-    return <LoadingScreen title="Wist je dat?" info="Hier komt een interessant weetje" />;
+    return (
+      <LoadingScreen
+        title="Wist je dat?"
+        info="Hier komt een interessant weetje"
+      />
+    );
   if (error) return <p>Error </p>;
 
   return (
