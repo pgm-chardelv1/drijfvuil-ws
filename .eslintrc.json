@@ -24,12 +24,16 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript", "plugin:prettier/recommended"],
-      "rules": {}
+      "rules": {
+        "linebreak-style":"off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
+      "rules": {
+        "linebreak-style": "off"
+      }
     }
   ]
 }
