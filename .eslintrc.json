@@ -23,7 +23,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript", "plugin:prettier/prettier"],
+      "extends": ["plugin:@nrwl/nx/typescript", "plugin:prettier/recommended"],
       "rules": {
         "linebreak-style":"off"
       }
