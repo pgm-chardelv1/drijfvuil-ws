@@ -21,8 +21,8 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
         uses: nrwl/nx-set-shas@v2
-      - run: echo "The base is set to ${{ steps.setSHAs.outputs.base }}"
-      - run: echo "The HEAD is set to ${{ steps.setSHAs.outputs.head }}"
+      - run: echo "BASE set to ${{ steps.setSHAs.outputs.base }}"
+      - run: echo "HEAD set to ${{ steps.setSHAs.outputs.head }}"
       - uses: actions/setup-node@v1
         with:
           node-version: '14'
