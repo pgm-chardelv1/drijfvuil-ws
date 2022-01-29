@@ -1,4 +1,8 @@
-name: CI
+# GitHub actions for using 
+# Nx Distributed Task Execution (see: https://nx.dev/using-nx/dte)
+# see Nx Mental Model (https://nx.dev/using-nx/mental-model)
+
+name: Distributed Task Execution
 on:
   push:
     branches:

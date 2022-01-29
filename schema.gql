@@ -13,6 +13,31 @@ type User {
   password: String!
 }
 
+type DbImage {
+  """Image ID"""
+  id: String!
+
+  """Image URL"""
+  url: String
+
+  """Image Key"""
+  key: String!
+
+  """Image was created at"""
+  createdAt: DateTime!
+
+  """Image last updated at"""
+  updatedAt: DateTime!
+
+  """The report the image is linked to"""
+  report: Report
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Report {
   """Report ID"""
   id: Int!
@@ -41,10 +66,10 @@ type Report {
   quarter: Quarter
 
   """Image for this report"""
-  image: Image
+  dbImage: DbImage
 
   """ID for the image"""
-  imageId: String
+  dbImageId: String
 
   """Extra information for the report"""
   extra: String
@@ -54,33 +79,6 @@ type Report {
 
   """Type of litter report is for"""
   litterType: String
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Image {
-  """Image ID"""
-  id: String!
-
-  """Image URL"""
-  url: String
-
-  """Image Key"""
-  key: String!
-
-  """Image was created at"""
-  createdAt: DateTime!
-
-  """Image last updated at"""
-  updatedAt: DateTime!
-
-  """The report the image is linked to"""
-  report: Report
-  quarter: Quarter
-  city: City
 }
 
 type Quarter {
@@ -98,9 +96,6 @@ type Quarter {
 
   """Reports in this quarter"""
   reports: [Report!]
-
-  """Images in this quarter"""
-  images: [Image!]
 
   """The city this quarter is in"""
   city: City!
@@ -154,9 +149,6 @@ type City {
   """Quarters in this city"""
   quarters: [Quarter!]
 
-  """Images in this city"""
-  images: [Image!]
-
   """Cleanups that took place in this city"""
   cleanups: [Cleanup!]
 }
@@ -167,13 +159,13 @@ type Query {
   city(id: Int!): City!
   cities: [City!]!
   cleanup(id: Int!): Cleanup!
-  cleanups: [Cleanup!]!
+  cleanups(cityId: Int = 9000, quarterId: Int, offset: Int = 0, limit: Int = 30): [Cleanup!]!
   quarter(id: Int!): Quarter!
   quarters: [Quarter!]!
-  image(id: String!): Image!
-  images: [Image!]!
+  dbImage(id: String!): DbImage!
+  dbImages: [DbImage!]!
   report(id: Int!): Report!
-  reports: [Report!]!
+  reports(offset: Int = 0, limit: Int = 30, cityId: Int = 9000, quarterId: Int): [Report!]!
 }
 
 type Mutation {
@@ -191,10 +183,10 @@ type Mutation {
   createQuarter(createQuarterInput: CreateQuarterDto!): Quarter!
   updateQuarter(updateQuarterInput: UpdateQuarterDto!): Quarter!
   deleteQuarter(id: Int!): Quarter!
-  createImage(createImageInput: CreateImageDto!): Image!
-  updateImage(updateImageInput: UpdateImageDto!): Image!
-  deleteImage(id: String!): Image!
-  getPresignedImageUrl(updateImageInput: UpdateImageDto!): Image!
+  createImage(createImageInput: CreateImageDto!): DbImage!
+  updateImage(updateImageInput: UpdateImageDto!): DbImage!
+  deleteImage(id: String!): DbImage!
+  getPresignedImageUrl(updateImageInput: UpdateImageDto!): DbImage!
   createReport(createReportInput: CreateReportDto!): Report!
   updateReport(updateReportInput: UpdateReportDto!): Report!
   deleteReport(id: Int!): Report!
@@ -345,7 +337,7 @@ input CreateReportDto {
   quarterId: Int!
 
   """Images for this report"""
-  imageId: String
+  dbImageId: String
 
   """Extra information"""
   extra: String
@@ -368,7 +360,7 @@ input UpdateReportDto {
   quarterId: Int
 
   """Images for this report"""
-  imageId: String
+  dbImageId: String
 
   """Extra information"""
   extra: String

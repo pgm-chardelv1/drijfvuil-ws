@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { City } from '../../cities/entities/city.entity';
 import { Quarter } from '../../quarters/entities/quarter.entity';
-import { Image } from '../../images/entities/image.entity';
+import { DbImage } from '../../images/entities/image.entity';
 
 /**
  * Defines the Report TypeOrm entity
@@ -89,24 +89,23 @@ export class Report {
    * @type {Image}
    * @memberof Report
    */
-  @OneToOne(() => Image, (image) => image.report, {
-    cascade: true,
+  @OneToOne(() => DbImage, (dbImage) => dbImage.report, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @Field(() => Image, {
+  @JoinColumn({ name: 'dbImageId', referencedColumnName: 'id' })
+  @Field(() => DbImage, {
     description: 'Image for this report',
     nullable: true,
   })
-  @JoinColumn()
-  image?: Image;
+  dbImage?: DbImage;
 
   @Column()
   @Field(() => String, {
     description: 'ID for the image',
     nullable: true,
   })
-  imageId?: string;
+  dbImageId?: string;
 
   @Column()
   @Field(() => String, {

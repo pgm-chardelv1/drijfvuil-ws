@@ -1,9 +1,6 @@
 import { Icon, LatLngExpression } from 'leaflet';
-import React from 'react';
 import { Marker } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
-import { Report } from '../../interfaces';
-import LeafletPopUp from './leafletPopup/LeafletPopUp';
 
 import addReport from '../../assets/markers/add-report.png';
 import iconShadow from '../../assets/markers/marker-shadow.png';
@@ -29,7 +26,11 @@ function LeafletUserMarker({ position }: LeafletUserMarkerProps) {
   };
 
   return (
-    <Marker position={position} eventHandlers={{ click: handleOnClick }} icon={addReportIcon} />
+    <Marker
+      position={position}
+      eventHandlers={{ click: handleOnClick }}
+      icon={addReportIcon}
+    />
   );
 }
 

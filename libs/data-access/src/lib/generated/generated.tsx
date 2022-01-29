@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -23,8 +23,6 @@ export type City = {
   cleanups?: Maybe<Array<Cleanup>>;
   /** Postal code */
   id: Scalars['Int'];
-  /** Images in this city */
-  images?: Maybe<Array<Image>>;
   /** City name */
   name: Scalars['String'];
   /** Polygon of latitude longitude expressions */
@@ -98,10 +96,10 @@ export type CreateQuarterDto = {
 export type CreateReportDto = {
   /** The postal code for the city the report is made in */
   cityId: Scalars['Int'];
+  /** Images for this report */
+  dbImageId?: InputMaybe<Scalars['String']>;
   /** Extra information */
   extra?: InputMaybe<Scalars['String']>;
-  /** Images for this report */
-  imageId?: InputMaybe<Scalars['String']>;
   /** Latitude and longitude of the report. Example: [51.156416,16.615456] */
   latLngTuple: Array<Scalars['Float']>;
   /** Type of litter the report is for */
@@ -119,16 +117,14 @@ export type CreateUserDto = {
   password: Scalars['String'];
 };
 
-export type Image = {
-  __typename?: 'Image';
-  city?: Maybe<City>;
+export type DbImage = {
+  __typename?: 'DbImage';
   /** Image was created at */
   createdAt: Scalars['DateTime'];
   /** Image ID */
   id: Scalars['String'];
   /** Image Key */
   key: Scalars['String'];
-  quarter?: Maybe<Quarter>;
   /** The report the image is linked to */
   report?: Maybe<Report>;
   /** Image last updated at */
@@ -148,24 +144,24 @@ export type Mutation = {
   __typename?: 'Mutation';
   createCity: City;
   createCleanup: Cleanup;
-  createImage: Image;
+  createImage: DbImage;
   createQuarter: Quarter;
   createReport: Report;
   createUser: User;
   deleteCity: City;
   deleteCleanup: Cleanup;
-  deleteImage: Image;
+  deleteImage: DbImage;
   deleteManyReports: Report;
   deleteQuarter: Quarter;
   deleteReport: Report;
   deleteUser: User;
-  getPresignedImageUrl: Image;
+  getPresignedImageUrl: DbImage;
   handleFullCleanup: Report;
   login: User;
   register: User;
   updateCity: City;
   updateCleanup: Cleanup;
-  updateImage: Image;
+  updateImage: DbImage;
   updateQuarter: Quarter;
   updateReport: Report;
   updateUser: User;
@@ -297,8 +293,6 @@ export type Quarter = {
   cleanups?: Maybe<Array<Cleanup>>;
   /** Quarter ID */
   id: Scalars['Int'];
-  /** Images in this quarter */
-  images?: Maybe<Array<Image>>;
   /** Polygon for the quarter. */
   polygon: Array<Scalars['Float']>;
   /** Quarter name */
@@ -313,8 +307,8 @@ export type Query = {
   city: City;
   cleanup: Cleanup;
   cleanups: Array<Cleanup>;
-  image: Image;
-  images: Array<Image>;
+  dbImage: DbImage;
+  dbImages: Array<DbImage>;
   quarter: Quarter;
   quarters: Array<Quarter>;
   report: Report;
@@ -334,7 +328,15 @@ export type QueryCleanupArgs = {
 };
 
 
-export type QueryImageArgs = {
+export type QueryCleanupsArgs = {
+  cityId?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  quarterId?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryDbImageArgs = {
   id: Scalars['String'];
 };
 
@@ -346,6 +348,14 @@ export type QueryQuarterArgs = {
 
 export type QueryReportArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryReportsArgs = {
+  cityId?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  quarterId?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -361,14 +371,14 @@ export type Report = {
   cityId: Scalars['Int'];
   /** Report created at [DATE] */
   createdAt: Scalars['DateTime'];
+  /** Image for this report */
+  dbImage?: Maybe<DbImage>;
+  /** ID for the image */
+  dbImageId?: Maybe<Scalars['String']>;
   /** Extra information for the report */
   extra?: Maybe<Scalars['String']>;
   /** Report ID */
   id: Scalars['Int'];
-  /** Image for this report */
-  image?: Maybe<Image>;
-  /** ID for the image */
-  imageId?: Maybe<Scalars['String']>;
   /** Latitude and longitude of the report as a latitude longitude tuple. Example: [51.11321,16.18646] */
   latLngTuple: Array<Scalars['Float']>;
   /** Type of litter report is for */
@@ -426,11 +436,11 @@ export type UpdateQuarterDto = {
 export type UpdateReportDto = {
   /** The postal code for the city the report is made in */
   cityId?: InputMaybe<Scalars['Int']>;
+  /** Images for this report */
+  dbImageId?: InputMaybe<Scalars['String']>;
   /** Extra information */
   extra?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
-  /** Images for this report */
-  imageId?: InputMaybe<Scalars['String']>;
   /** Latitude and longitude of the report. Example: [51.156416,16.615456] */
   latLngTuple?: InputMaybe<Array<Scalars['Float']>>;
   /** Type of litter the report is for */
@@ -460,17 +470,20 @@ export type User = {
   password: Scalars['String'];
 };
 
-export type ReportListQueryVariables = Exact<{ [key: string]: never; }>;
+export type ReportListQueryVariables = Exact<{
+  cityId?: InputMaybe<Scalars['Int']>;
+  quarterId?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type ReportListQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, latLngTuple: Array<number>, imageId?: string | null | undefined, extra?: string | null | undefined, createdAt: any, locationType: string, litterType?: string | null | undefined, city: { __typename?: 'City', name: string }, quarter?: { __typename?: 'Quarter', quarter: string, id: number } | null | undefined }> };
+export type ReportListQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } }> };
 
 export type ReportQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type ReportQuery = { __typename?: 'Query', report: { __typename?: 'Report', id: number, latLngTuple: Array<number>, imageId?: string | null | undefined, extra?: string | null | undefined, createdAt: any, locationType: string, litterType?: string | null | undefined, city: { __typename?: 'City', name: string }, quarter?: { __typename?: 'Quarter', quarter: string, id: number } | null | undefined } };
+export type ReportQuery = { __typename?: 'Query', report: { __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } } };
 
 export type CreateReportMutationVariables = Exact<{
   createReportInput: CreateReportDto;
@@ -484,7 +497,7 @@ export type CreateImageMutationVariables = Exact<{
 }>;
 
 
-export type CreateImageMutation = { __typename?: 'Mutation', createImage: { __typename?: 'Image', id: string, key: string } };
+export type CreateImageMutation = { __typename?: 'Mutation', createImage: { __typename?: 'DbImage', id: string, key: string } };
 
 export type UpdateReportMutationVariables = Exact<{
   updateReportInput: UpdateReportDto;
@@ -500,24 +513,24 @@ export type HandleFullCleanupMutationVariables = Exact<{
 
 export type HandleFullCleanupMutation = { __typename?: 'Mutation', handleFullCleanup: { __typename?: 'Report', id: number, latLngTuple: Array<number> } };
 
-export type ImageListQueryVariables = Exact<{ [key: string]: never; }>;
+export type DbImageListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ImageListQuery = { __typename?: 'Query', images: Array<{ __typename?: 'Image', id: string, key: string }> };
+export type DbImageListQuery = { __typename?: 'Query', dbImages: Array<{ __typename?: 'DbImage', id: string, key: string }> };
 
 export type ImageQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ImageQuery = { __typename?: 'Query', image: { __typename?: 'Image', id: string, key: string } };
+export type ImageQuery = { __typename?: 'Query', dbImage: { __typename?: 'DbImage', id: string, key: string } };
 
 export type GetPresignedImageUrlMutationVariables = Exact<{
   updateImageInput: UpdateImageDto;
 }>;
 
 
-export type GetPresignedImageUrlMutation = { __typename?: 'Mutation', getPresignedImageUrl: { __typename?: 'Image', key: string, url?: string | null | undefined } };
+export type GetPresignedImageUrlMutation = { __typename?: 'Mutation', getPresignedImageUrl: { __typename?: 'DbImage', key: string, url?: string | null | undefined } };
 
 export type QuarterListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -543,36 +556,42 @@ export type CityQueryVariables = Exact<{
 
 export type CityQuery = { __typename?: 'Query', city: { __typename?: 'City', id: number, name: string, polygon: string } };
 
-export type CleanupListQueryVariables = Exact<{ [key: string]: never; }>;
+export type CleanupListQueryVariables = Exact<{
+  cityId?: InputMaybe<Scalars['Int']>;
+  quarterId?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type CleanupListQuery = { __typename?: 'Query', cleanups: Array<{ __typename?: 'Cleanup', id: number, createdAt: any, type: string, location: Array<number>, cityId: number, quarterId?: number | null | undefined }> };
+export type CleanupListQuery = { __typename?: 'Query', cleanups: Array<{ __typename?: 'Cleanup', id: number, location: Array<number>, quarter?: { __typename?: 'Quarter', quarter: string, id: number } | null | undefined, city: { __typename?: 'City', name: string } }> };
 
 export type CleanupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type CleanupQuery = { __typename?: 'Query', cleanup: { __typename?: 'Cleanup', id: number, createdAt: any, type: string, location: Array<number>, cityId: number, quarterId?: number | null | undefined } };
+export type CleanupQuery = { __typename?: 'Query', cleanup: { __typename?: 'Cleanup', id: number, location: Array<number>, quarter?: { __typename?: 'Quarter', quarter: string, id: number } | null | undefined, city: { __typename?: 'City', name: string } } };
 
 
 export const ReportListDocument = gql`
-    query reportList {
-  reports {
+    query reportList($cityId: Int, $quarterId: Int) {
+  reports(cityId: $cityId, quarterId: $quarterId) {
     id
-    latLngTuple
-    city {
-      name
-    }
-    quarter {
-      quarter
-      id
-    }
-    imageId
-    extra
-    createdAt
     locationType
     litterType
+    latLngTuple
+    dbImage {
+      id
+      key
+    }
+    extra
+    quarter {
+      id
+      quarter
+    }
+    city {
+      id
+      name
+    }
   }
 }
     `;
@@ -589,6 +608,8 @@ export const ReportListDocument = gql`
  * @example
  * const { data, loading, error } = useReportListQuery({
  *   variables: {
+ *      cityId: // value for 'cityId'
+ *      quarterId: // value for 'quarterId'
  *   },
  * });
  */
@@ -607,19 +628,22 @@ export const ReportDocument = gql`
     query report($id: Int!) {
   report(id: $id) {
     id
-    latLngTuple
-    city {
-      name
-    }
-    quarter {
-      quarter
-      id
-    }
-    imageId
-    extra
-    createdAt
     locationType
     litterType
+    latLngTuple
+    dbImage {
+      id
+      key
+    }
+    extra
+    quarter {
+      id
+      quarter
+    }
+    city {
+      id
+      name
+    }
   }
 }
     `;
@@ -787,9 +811,9 @@ export function useHandleFullCleanupMutation(baseOptions?: Apollo.MutationHookOp
 export type HandleFullCleanupMutationHookResult = ReturnType<typeof useHandleFullCleanupMutation>;
 export type HandleFullCleanupMutationResult = Apollo.MutationResult<HandleFullCleanupMutation>;
 export type HandleFullCleanupMutationOptions = Apollo.BaseMutationOptions<HandleFullCleanupMutation, HandleFullCleanupMutationVariables>;
-export const ImageListDocument = gql`
-    query imageList {
-  images {
+export const DbImageListDocument = gql`
+    query dbImageList {
+  dbImages {
     id
     key
   }
@@ -797,34 +821,34 @@ export const ImageListDocument = gql`
     `;
 
 /**
- * __useImageListQuery__
+ * __useDbImageListQuery__
  *
- * To run a query within a React component, call `useImageListQuery` and pass it any options that fit your needs.
- * When your component renders, `useImageListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useDbImageListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDbImageListQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useImageListQuery({
+ * const { data, loading, error } = useDbImageListQuery({
  *   variables: {
  *   },
  * });
  */
-export function useImageListQuery(baseOptions?: Apollo.QueryHookOptions<ImageListQuery, ImageListQueryVariables>) {
+export function useDbImageListQuery(baseOptions?: Apollo.QueryHookOptions<DbImageListQuery, DbImageListQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ImageListQuery, ImageListQueryVariables>(ImageListDocument, options);
+        return Apollo.useQuery<DbImageListQuery, DbImageListQueryVariables>(DbImageListDocument, options);
       }
-export function useImageListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ImageListQuery, ImageListQueryVariables>) {
+export function useDbImageListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DbImageListQuery, DbImageListQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ImageListQuery, ImageListQueryVariables>(ImageListDocument, options);
+          return Apollo.useLazyQuery<DbImageListQuery, DbImageListQueryVariables>(DbImageListDocument, options);
         }
-export type ImageListQueryHookResult = ReturnType<typeof useImageListQuery>;
-export type ImageListLazyQueryHookResult = ReturnType<typeof useImageListLazyQuery>;
-export type ImageListQueryResult = Apollo.QueryResult<ImageListQuery, ImageListQueryVariables>;
+export type DbImageListQueryHookResult = ReturnType<typeof useDbImageListQuery>;
+export type DbImageListLazyQueryHookResult = ReturnType<typeof useDbImageListLazyQuery>;
+export type DbImageListQueryResult = Apollo.QueryResult<DbImageListQuery, DbImageListQueryVariables>;
 export const ImageDocument = gql`
     query image($id: String!) {
-  image(id: $id) {
+  dbImage(id: $id) {
     id
     key
   }
@@ -1039,14 +1063,17 @@ export type CityQueryHookResult = ReturnType<typeof useCityQuery>;
 export type CityLazyQueryHookResult = ReturnType<typeof useCityLazyQuery>;
 export type CityQueryResult = Apollo.QueryResult<CityQuery, CityQueryVariables>;
 export const CleanupListDocument = gql`
-    query cleanupList {
-  cleanups {
+    query cleanupList($cityId: Int, $quarterId: Int) {
+  cleanups(cityId: $cityId, quarterId: $quarterId) {
     id
-    createdAt
-    type
+    quarter {
+      quarter
+      id
+    }
+    city {
+      name
+    }
     location
-    cityId
-    quarterId
   }
 }
     `;
@@ -1063,6 +1090,8 @@ export const CleanupListDocument = gql`
  * @example
  * const { data, loading, error } = useCleanupListQuery({
  *   variables: {
+ *      cityId: // value for 'cityId'
+ *      quarterId: // value for 'quarterId'
  *   },
  * });
  */
@@ -1081,11 +1110,14 @@ export const CleanupDocument = gql`
     query cleanup($id: Int!) {
   cleanup(id: $id) {
     id
-    createdAt
-    type
+    quarter {
+      quarter
+      id
+    }
+    city {
+      name
+    }
     location
-    cityId
-    quarterId
   }
 }
     `;

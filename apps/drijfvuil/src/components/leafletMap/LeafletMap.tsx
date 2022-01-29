@@ -7,6 +7,7 @@ import LeafletPlaceHolder from './LeafletPlaceHolder';
 import LeafletPolygons from './LeafletPolygons';
 import { RootState } from '../../redux/reducers';
 
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import LeafletUserMarker from './LeafletUserMarker';
 import { useSelector } from 'react-redux';
 interface LeafletMapProps {
@@ -21,7 +22,10 @@ const StyledContainer = styled.div`
 
 const zoom = 17;
 
-const LeafletMap = ({ handleOnLoad, children }: LeafletMapProps): ReactElement => {
+const LeafletMap = ({
+  handleOnLoad,
+  children,
+}: LeafletMapProps): ReactElement => {
   const userCoordinates = useSelector((state: RootState) => state.userPosition);
 
   return (
@@ -44,7 +48,9 @@ const LeafletMap = ({ handleOnLoad, children }: LeafletMapProps): ReactElement =
           />
           <LeafletUserMarker position={userCoordinates} />
 
-          {children}
+          <MarkerClusterGroup>
+            {children}
+          </MarkerClusterGroup>
 
           <LeafletPolygons />
         </MapContainer>

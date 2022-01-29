@@ -19,7 +19,8 @@ import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { RequestWithUser } from '../auth/interfaces';
 import { Quarter } from '../quarters/entities/quarter.entity';
 import { City } from '../cities/entities/city.entity';
-import { Image } from '../images/entities/image.entity';
+import { DbImage } from '../images/entities/image.entity';
+import { GetReportsArgs } from './dto/get-reports.args';
 
 @Resolver(() => Report)
 export class ReportsResolver {
@@ -40,8 +41,17 @@ export class ReportsResolver {
    * @returns all reports
    */
   @Query(() => [Report], { name: 'reports' })
-  findAll(): Promise<Report[]> {
-    return this.reportsService.findAll();
+  findAll(@Args() args: GetReportsArgs): Promise<Report[]> {
+    if (args.cityId && args.quarterId) {
+      return this.reportsService.findAllByCityAndQuarter(
+        args.cityId,
+        args.quarterId,
+      );
+    } else if (args.cityId) {
+      return this.reportsService.findAllByCity(args.cityId);
+    } else {
+      return this.reportsService.findAll();
+    }
   }
 
   /**
@@ -51,7 +61,9 @@ export class ReportsResolver {
    */
   @Mutation(() => Report)
   @UseGuards(GqlThrottlerGuard)
-  createReport(@Args('createReportInput') createReportInput: CreateReportDto): Promise<Report> {
+  createReport(
+    @Args('createReportInput') createReportInput: CreateReportDto,
+  ): Promise<Report> {
     return this.reportsService.create(createReportInput);
   }
 
@@ -62,7 +74,9 @@ export class ReportsResolver {
    */
   @Mutation(() => Report)
   @UseGuards(GqlThrottlerGuard)
-  updateReport(@Args('updateReportInput') updateReportInput: UpdateReportDto): Promise<Report> {
+  updateReport(
+    @Args('updateReportInput') updateReportInput: UpdateReportDto,
+  ): Promise<Report> {
     return this.reportsService.update(updateReportInput.id, updateReportInput);
   }
 
@@ -92,7 +106,9 @@ export class ReportsResolver {
     @Args('ids', { type: () => [Int] }) ids: Array<number>,
     @Context() context: { req: RequestWithUser },
   ): Promise<Array<number>> {
-    Logger.log(`Reports #${JSON.stringify(ids)} deleted by: ${context.req.user.email}`);
+    Logger.log(
+      `Reports #${JSON.stringify(ids)} deleted by: ${context.req.user.email}`,
+    );
     return this.reportsService.removeMany(ids);
   }
 
@@ -106,13 +122,15 @@ export class ReportsResolver {
     return this.reportsService.getCity(report.cityId);
   }
 
-  @ResolveField(() => Image)
-  image(@Parent() report: Report): Promise<Image> {
-    return this.reportsService.getImage(report.imageId);
+  @ResolveField(() => DbImage)
+  dbImage(@Parent() report: Report): Promise<DbImage> {
+    return this.reportsService.getImage(report.dbImageId);
   }
 
   @Mutation(() => Report)
-  handleFullCleanup(@Args('id', { type: () => Int }) id: number): Promise<Report> {
+  handleFullCleanup(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Report> {
     return this.reportsService.handleFullCleanup(id);
   }
 }

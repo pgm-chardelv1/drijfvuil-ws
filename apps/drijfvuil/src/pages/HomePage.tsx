@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { LeafletMap, LoadingScreen, MainNavigation } from '../components';
+
 import { RootState } from '../redux/reducers';
 import LeafletReportMarker from '../components/leafletMap/LeafletReportMarker';
 
@@ -27,7 +28,11 @@ function HomePage(): ReactElement {
       <LeafletMap handleOnLoad={handleOnLoad}>
         {reports &&
           reports.map((report, i) => (
-            <LeafletReportMarker position={report.latLngTuple} report={report} key={i} />
+            <LeafletReportMarker
+              position={report.latLngTuple}
+              report={report}
+              key={i}
+            />
           ))}
       </LeafletMap>
     </>

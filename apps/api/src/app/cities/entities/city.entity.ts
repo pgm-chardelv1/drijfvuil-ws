@@ -1,7 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { Cleanup } from '../../cleanups/entities/cleanup.entity';
-import { Image } from '../../images/entities/image.entity';
 import { Quarter } from '../../quarters/entities/quarter.entity';
 import { Report } from '../../reports/entities/report.entity';
 
@@ -72,19 +71,6 @@ export class City {
     description: 'Quarters in this city',
   })
   quarters?: Quarter[];
-
-  /**
-   * Relation to Image entity
-   *
-   * @type {Image[]}
-   * @memberof City
-   */
-  @OneToMany(() => Image, (image) => image.city)
-  @Field(() => [Image], {
-    nullable: true,
-    description: 'Images in this city',
-  })
-  images?: Image[];
 
   /**
    * Relations to Cleanup entity

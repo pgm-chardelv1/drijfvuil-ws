@@ -1,18 +1,17 @@
 {
   "name": "drijfvuil-ws",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   },
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@compodoc/compodoc": "^1.1.16",
-    "@craco/craco": "^6.4.3",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.5",
     "@nestjs/core": "^8.0.0",
@@ -60,6 +59,7 @@
     "react-icons": "^4.3.1",
     "react-is": "17.0.2",
     "react-leaflet": "^3.2.2",
+    "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-lottie": "^1.2.3",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.1.1",
@@ -113,6 +113,7 @@
     "@types/react": "17.0.30",
     "@types/react-dom": "17.0.9",
     "@types/react-is": "17.0.2",
+    "@types/react-leaflet-markercluster": "^3.0.0",
     "@types/styled-components": "^5.1.19",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",

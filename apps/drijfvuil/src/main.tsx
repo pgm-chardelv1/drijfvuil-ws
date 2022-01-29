@@ -15,7 +15,6 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <Provider store={store}>
         <AppGlobalStyle />
-
         <BrowserRouter>
           <App />
         </BrowserRouter>

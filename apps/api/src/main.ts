@@ -46,7 +46,9 @@ async function bootstrap() {
     ? Logger.log(
         `🚀 GraphQL playground is running on: https://drijfvuil-api.onrender.com:${port}/graphql`,
       )
-    : Logger.log(`🚀 GraphQL playground is running on: http://localhost:${port}/graphql`);
+    : Logger.log(
+        `🚀 GraphQL playground is running on: http://localhost:${port}/graphql`,
+      );
 }
 
 bootstrap();

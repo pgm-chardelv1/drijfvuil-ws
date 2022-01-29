@@ -11,7 +11,7 @@ import { ImageUploadService } from '../files/files.service';
 import { Report } from '../reports/entities/report.entity';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
-import { Image } from './entities/image.entity';
+import { DbImage } from './entities/image.entity';
 
 @Injectable()
 /**
@@ -19,8 +19,8 @@ import { Image } from './entities/image.entity';
  */
 export class ImagesService {
   constructor(
-    @InjectRepository(Image)
-    private readonly imageRepository: Repository<Image>,
+    @InjectRepository(DbImage)
+    private readonly imageRepository: Repository<DbImage>,
     private readonly filesService: ImageUploadService,
   ) {}
 
@@ -29,11 +29,13 @@ export class ImagesService {
    * @param createImageDto defines the input for creating a new image
    * @returns the created image
    */
-  create(createImageDto: CreateImageDto): Promise<Image> {
+  create(createImageDto: CreateImageDto): Promise<DbImage> {
     const image = this.imageRepository.create(createImageDto);
 
     if (!image) {
-      throw new BadRequestException(`Create failed! Image could not be created`);
+      throw new BadRequestException(
+        `Create failed! Image could not be created`,
+      );
     }
 
     return this.imageRepository.save(image);
@@ -43,10 +45,8 @@ export class ImagesService {
    * Get all images
    * @returns all images
    */
-  findAll(): Promise<Image[]> {
-    return this.imageRepository.find({
-      relations: ['city', 'quarter'],
-    });
+  findAll(): Promise<DbImage[]> {
+    return this.imageRepository.find({ relations: ['report'] });
   }
 
   /**
@@ -54,16 +54,14 @@ export class ImagesService {
    * @param id image id
    * @returns image with the given ID
    */
-  findOne(id: string): Promise<Image> {
+  findOne(id: string): Promise<DbImage> {
     const image = this.imageRepository.findOne(id);
 
     if (!image) {
       throw new NotFoundException(`Query failed! Image #${id} not found`);
     }
 
-    return this.imageRepository.findOneOrFail(id, {
-      relations: ['city', 'quarter', 'report'],
-    });
+    return this.imageRepository.findOneOrFail(id, { relations: ['report'] });
   }
 
   /**
@@ -72,7 +70,7 @@ export class ImagesService {
    * @param updateImageDto the updated input for the image
    * @returns updated image
    */
-  async update(id: string, updateImageDto: UpdateImageDto): Promise<Image> {
+  async update(id: string, updateImageDto: UpdateImageDto): Promise<DbImage> {
     const image = await this.imageRepository.preload({
       id: id,
       ...updateImageDto,
@@ -90,7 +88,7 @@ export class ImagesService {
    * @param id image uuid
    * @returns the removed image
    */
-  async remove(id: string): Promise<Image> {
+  async remove(id: string): Promise<DbImage> {
     const image = await this.imageRepository.findOne(id);
 
     if (!image) {
@@ -101,16 +99,22 @@ export class ImagesService {
     return image;
   }
 
-  async addReport(id: string, report: Report): Promise<Image> {
+  async addReport(id: string, report: Report): Promise<DbImage> {
     const image = await this.imageRepository.findOneOrFail(id);
     image.report = report;
     return this.imageRepository.save(image);
   }
 
-  async getPresignedImageUrl(updateImageInput: UpdateImageDto): Promise<Image> {
+  async getPresignedImageUrl(
+    updateImageInput: UpdateImageDto,
+  ): Promise<DbImage> {
     try {
-      const image = await this.imageRepository.findOneOrFail(updateImageInput.id);
-      const presignedUrl = await this.filesService.generatePresignedUrl(image.key);
+      const image = await this.imageRepository.findOneOrFail(
+        updateImageInput.id,
+      );
+      const presignedUrl = await this.filesService.generatePresignedUrl(
+        image.key,
+      );
       if (!presignedUrl)
         throw new InternalServerErrorException(
           `Something went wrong while generating a presigned URL for image ${image.key}`,

@@ -1,9 +1,15 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 import { City } from '../../cities/entities/city.entity';
 import { Cleanup } from '../../cleanups/entities/cleanup.entity';
-import { Image } from '../../images/entities/image.entity';
 import { PolygonType } from './polygon.interface';
 import { Report } from '../../reports/entities/report.entity';
 /**
@@ -49,17 +55,8 @@ export class Quarter {
     nullable: true,
     description: 'Reports in this quarter',
   })
+  @JoinColumn({ name: 'reportId', referencedColumnName: 'id' })
   reports?: Report[];
-
-  @OneToMany(() => Image, (image) => image.quarter, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @Field(() => [Image], {
-    nullable: true,
-    description: 'Images in this quarter',
-  })
-  images?: Image[];
 
   @ManyToOne(() => City, (city) => city.quarters, {
     onDelete: 'CASCADE',

@@ -15,8 +15,7 @@ import { data } from '@drijfvuil-ws/data';
  */
 import { City } from '../cities/entities/city.entity';
 import { CreateReportDto } from '../reports/dto/create-report.dto';
-import { Image } from '../images/entities/image.entity';
-import { ImageUploadService } from '../files/files.service';
+import { DbImage } from '../images/entities/image.entity';
 import { ImagesService } from '../images/images.service';
 import { Quarter } from '../quarters/entities/quarter.entity';
 import { Report } from '../reports/entities/report.entity';
@@ -34,15 +33,14 @@ import { User } from '../users/entities/user.entity';
 export class SeederService {
   constructor(
     @InjectRepository(City) private readonly citiesRepository: Repository<City>,
-    @InjectRepository(Image)
-    private readonly imagesRepository: Repository<Image>,
+    @InjectRepository(DbImage)
+    private readonly imagesRepository: Repository<DbImage>,
     @InjectRepository(Quarter)
     private readonly quartersRepository: Repository<Quarter>,
     @InjectRepository(Report)
     private readonly reportsRepository: Repository<Report>,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly imagesService: ImagesService,
-    private readonly imageUploadService: ImageUploadService,
   ) {}
 
   /**
@@ -129,19 +127,23 @@ export class SeederService {
   /**
    * Create and seed a new report
    *
-   * @param {Image} img
+   * @param {DbImage} img
    * @param {CreateReportDto} rep
    * @return {Promise<Report>}
    * @memberof SeederService
    */
-  async seedReport(img: Image, rep: CreateReportDto) {
+  async seedReport(img: DbImage, rep: CreateReportDto) {
     console.log('Started seeding a report');
     try {
       const report: CreateReportDto = {
         ...rep,
-        imageId: img.id,
+        dbImageId: img.id,
       };
-      return this.reportsRepository.save(report);
+      const createdReport = this.reportsRepository.create(report);
+      // createdReport.dbImage = img;
+      img.report = createdReport;
+      await this.imagesRepository.save(img);
+      return this.reportsRepository.save(createdReport);
     } catch (err) {
       return err;
     }
@@ -436,17 +438,24 @@ export class SeederService {
     try {
       for (let i = 0; i < this.reports.length; i++) {
         const img = this.imagesRepository.create({
-          url: `https://picsum.photos/200/300?random=${Math.round(Math.random() * 15)}`,
+          url: `https://picsum.photos/200/300?random=${Math.round(
+            Math.random() * 15,
+          )}`,
           key: '1643028116177 - ab90a7af-6cfb-4935-94f5-cd9f1a811ead.jpeg',
         });
         const createdImg = await this.imagesRepository.save(img);
         if (createdImg) {
-          const createReport = await this.seedReport(createdImg, this.reports[i]);
-          if (createReport) await this.imagesService.addReport(img.id, createReport);
+          const createReport = await this.seedReport(
+            createdImg,
+            this.reports[i],
+          );
+          if (createReport)
+            await this.imagesService.addReport(createdImg.id, createReport);
         } else {
           return `Could not create image. Not creating report.`;
         }
       }
+      await this.reportsRepository.find();
       return {
         message: 'Successfully seeded.',
         success: true,
