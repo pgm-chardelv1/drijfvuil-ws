@@ -1,11 +1,18 @@
+# Render deployment Blueprint
+# For more information read the documentation on: https://render.com/docs/blueprint-spec
+
+# How to use a Blueprint (Infrastructure as Code [IAC]): https://render.com/docs/infrastructure-as-code
+
 previewsEnabled: true
 previewsExpireAfterDays: 1
 
 services:
 # The server
 - type: web
+  # !TODO Edit the name variable to your desired service name
   name: drijf-api
   env: node
+  # !NOTICE: region should be the same as the region the database is located in to avoid errors in connecting to the database
   region: oregon
   plan: starter
   branch: main
@@ -23,6 +30,7 @@ services:
     generateValue: true
   - key: BCRYPT_SALT_ROUNDS
     value: 12
+  # !NOTICE: These variables should have the same name as the variables set under Databases to ensure the database connection
   - key: DB_HOST
     fromDatabase:
       name: drijf-prod
@@ -46,6 +54,7 @@ services:
 
 # The client
 - type: web
+  # !TODO: Edit the name variable to your desired service name
   name: drijf
   env: static
   buildCommand: npx nx build drijfvuil; npx nx run drijfvuil:pwa
@@ -53,15 +62,17 @@ services:
 
 # The documentation
 - type: web
+  # !TODO: Edit the name variable to your desired service name
   name: drijf-docs-api
   env: static
   buildCommand: npx nx run api:generate-docs
   staticPublishPath: ./dist/docs/api
 
-
-
 # The databases
 databases:
+# !TODO: Edit the variables to your desired settings
+## Passwords and database settings will automatically be set as 
+## Environment variables in the deployed API service
 - name: drijf-prod
   databaseName: drijf_production
   user: drijf_production_user
