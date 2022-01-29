@@ -26,14 +26,14 @@ function HomePage(): ReactElement {
       )}
 
       <LeafletMap handleOnLoad={handleOnLoad}>
-          {reports &&
-            reports.map((report, i) => (
-              <LeafletReportMarker
-                position={report.latLngTuple}
-                report={report}
-                key={i}
-              />
-            ))}
+        {reports &&
+          reports.map((report, i) => (
+            <LeafletReportMarker
+              position={report.latLngTuple}
+              report={report}
+              key={i}
+            />
+          ))}
       </LeafletMap>
     </>
   );
