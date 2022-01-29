@@ -20,7 +20,6 @@ import {
   CreateImageDocument,
   CreateReportDocument,
   CreateReportMutationFn,
-  Image,
 } from '@drijfvuil-ws/data-access';
 import { useUploadFile } from '../../../hooks';
 import FormUploadingModal from './FormUploadingModal';
@@ -55,7 +54,9 @@ interface ReportFormProps {
   currentReport: Report | null | undefined;
 }
 
-export default function ReportForm({ currentReport }: ReportFormProps): ReactElement {
+export default function ReportForm({
+  currentReport,
+}: ReportFormProps): ReactElement {
   const [report, setReport] = useState<Report | null>(null);
   const [isUploading, setIsUploading] = useState<boolean | null>(null);
   const navigate = useNavigate();
@@ -65,15 +66,8 @@ export default function ReportForm({ currentReport }: ReportFormProps): ReactEle
     dispatch,
   );
 
-  interface CreateImageResult {
-    loading?: boolean;
-    data?: {
-      createImage?: Image;
-    };
-    error?: any;
-  }
-
-  const [createReport, reportResult] = useMutation<CreateReportMutationFn>(CreateReportDocument);
+  const [createReport, reportResult] =
+    useMutation<CreateReportMutationFn>(CreateReportDocument);
   const [createImage, imageResult] = useMutation(CreateImageDocument);
 
   const currentLocation = useSelector((state: RootState) => state.userPosition);
@@ -118,7 +112,9 @@ export default function ReportForm({ currentReport }: ReportFormProps): ReactEle
 
   const createNewImage = async (key: string, url: string) => {
     const createImageInput = { key: key, url: url };
-    const newImage = await createImage({ variables: { createImageInput: createImageInput } });
+    const newImage = await createImage({
+      variables: { createImageInput: createImageInput },
+    });
     const imageId = newImage.data.createImage.id;
     return imageId;
   };
@@ -166,7 +162,10 @@ export default function ReportForm({ currentReport }: ReportFormProps): ReactEle
   return (
     <Container>
       {isUploading !== null ? (
-        <FormUploadingModal isUploading={isUploading} setIsUploading={setIsUploading} />
+        <FormUploadingModal
+          isUploading={isUploading}
+          setIsUploading={setIsUploading}
+        />
       ) : null}
       <Formik
         initialValues={initialValues}
@@ -181,7 +180,11 @@ export default function ReportForm({ currentReport }: ReportFormProps): ReactEle
               handleCapture={handleCapture}
             />
 
-            <FormInputSet title="Locatie *" name="latLngTuple" placeholder="Uw locatie" />
+            <FormInputSet
+              title="Locatie *"
+              name="latLngTuple"
+              placeholder="Uw locatie"
+            />
 
             <FormInputSet
               title="Soort afval *"
