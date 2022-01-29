@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 /**
  * Defines the input type for creating a new report
  *
@@ -16,7 +16,8 @@ export class CreateReportDto {
    * @memberof CreateReportDto
    */
   @Field(() => [Number, Number], {
-    description: 'Latitude and longitude of the report. Example: [51.156416,16.615456]',
+    description:
+      'Latitude and longitude of the report. Example: [51.156416,16.615456]',
   })
   latLngTuple: [number, number];
 
@@ -53,12 +54,11 @@ export class CreateReportDto {
    * @type {string}
    * @memberof CreateReportDto
    */
-  @IsUUID()
   @Field(() => String, {
     description: 'Images for this report',
     nullable: true,
   })
-  imageId?: string;
+  dbImageId?: string;
 
   /**
    * Extra information about the report

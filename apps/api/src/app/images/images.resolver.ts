@@ -3,44 +3,45 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { ImagesService } from './images.service';
-import { Image } from './entities/image.entity';
+import { DbImage } from './entities/image.entity';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { RequestWithUser } from '../auth/interfaces';
 
-@Resolver(() => Image)
+@Resolver(() => DbImage)
 export class ImagesResolver {
   constructor(private imagesService: ImagesService) {}
 
   /**
    * Get one image by ID
    * @param id {string}
-   * @returns {Promise<Image>}
+   * @returns {Promise<DbImage>}
    * @memberof ImagesResolver
    */
-  @Query(() => Image, { name: 'image' })
-  findOne(@Args('id', ParseUUIDPipe) id: string): Promise<Image> {
+  @Query(() => DbImage, { name: 'dbImage' })
+  findOne(@Args('id', ParseUUIDPipe) id: string): Promise<DbImage> {
     return this.imagesService.findOne(id);
   }
 
   /**
    * Get all images
-   * @returns {Promise<Image[]>}
+   * @returns {Promise<DbImage[]>}
    * @memberof ImagesResolver
    */
-  @Query(() => [Image], { name: 'images' })
-  findAll(): Promise<Image[]> {
+  @Query(() => [DbImage], { name: 'dbImages' })
+  findAll(): Promise<DbImage[]> {
     return this.imagesService.findAll();
   }
 
   /**
    * Create a new image
    * @param createImageInput
-   * @returns {Promise<Image>}
+   * @returns {Promise<DbImage>}
    * @memberof ImagesResolver
    */
-  @Mutation(() => Image)
-  // @UseGuards(GqlAuthGuard)
-  createImage(@Args('createImageInput') createImageInput: CreateImageDto): Promise<Image> {
+  @Mutation(() => DbImage)
+  createImage(
+    @Args('createImageInput') createImageInput: CreateImageDto,
+  ): Promise<DbImage> {
     Logger.log(`Image ${createImageInput.key}`);
     return this.imagesService.create(createImageInput);
   }
@@ -51,13 +52,15 @@ export class ImagesResolver {
    * @returns the updated image
    * @memberof ImagesResolver
    */
-  @Mutation(() => Image)
+  @Mutation(() => DbImage)
   @UseGuards(GqlAuthGuard)
   updateImage(
     @Args('updateImageInput') updateImageInput: UpdateImageDto,
     @Context() context: { req: RequestWithUser },
-  ): Promise<Image> {
-    Logger.log(`Image #${updateImageInput.id} updated by: ${context.req.user.email}`);
+  ): Promise<DbImage> {
+    Logger.log(
+      `Image #${updateImageInput.id} updated by: ${context.req.user.email}`,
+    );
     return this.imagesService.update(updateImageInput.id, updateImageInput);
   }
 
@@ -67,12 +70,12 @@ export class ImagesResolver {
    * @returns the removed image
    * @memberof ImagesResolver
    */
-  @Mutation(() => Image)
+  @Mutation(() => DbImage)
   @UseGuards(GqlAuthGuard)
   deleteImage(
     @Args('id') id: string,
     @Context() context: { req: RequestWithUser },
-  ): Promise<Image> {
+  ): Promise<DbImage> {
     Logger.log(`Image #${id} deleted by: ${context.req.user.email}`);
     return this.imagesService.remove(id);
   }
@@ -84,8 +87,10 @@ export class ImagesResolver {
    * @return {*}  {Promise<Image>}
    * @memberof ImagesResolver
    */
-  @Mutation(() => Image)
-  getPresignedImageUrl(@Args('updateImageInput') updateImageInput: UpdateImageDto): Promise<Image> {
+  @Mutation(() => DbImage)
+  getPresignedImageUrl(
+    @Args('updateImageInput') updateImageInput: UpdateImageDto,
+  ): Promise<DbImage> {
     return this.imagesService.getPresignedImageUrl(updateImageInput);
   }
 }

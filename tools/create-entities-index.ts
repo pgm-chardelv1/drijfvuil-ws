@@ -4,7 +4,7 @@ import * as path from 'path';
 
 function createEntitiesIndex() {
   console.log('Creating entity-index.ts for api app');
-  const src = `${path.dirname(__dirname)}/apps/api/src/app`;
+  const src = `${path.dirname(__dirname)}/apps/api`;
   if (!fs.existsSync(src)) {
     console.log(`App api cannot be found. Path not exist: ${src}`);
     process.exit(1);
@@ -14,7 +14,7 @@ function createEntitiesIndex() {
   const outFile = `${outDir}/entities-index.ts`;
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir);
-  }  for (const item of fg.sync(`${src}/app/**/*.entity.ts`)) {
+  }  for (const item of fg.sync(`${src}/src/app/**/**.entity.ts`)) {
     const filePath = path.relative(outDir, item).replace(/\.ts$/, '');
     const data = `export * from '${filePath}'\n`;
     fs.writeFileSync(tmpFile, data, { flag: 'a+' });

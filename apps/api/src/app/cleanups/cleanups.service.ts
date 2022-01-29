@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -61,6 +65,25 @@ export class CleanupsService {
     });
   }
 
+  findAllByCity(cityId: number): Promise<Cleanup[]> {
+    return this.cleanupRepository.find({
+      where: {
+        cityId: cityId,
+      },
+    });
+  }
+
+  findAllByCityAndQuarter(
+    cityId: number,
+    quarterId: number,
+  ): Promise<Cleanup[]> {
+    return this.cleanupRepository.find({
+      where: {
+        cityId: cityId,
+        quarterId: quarterId,
+      },
+    });
+  }
   /**
    * Find one Cleanup object by {id}
    *
@@ -84,7 +107,10 @@ export class CleanupsService {
    * @return {*}  {Promise<Cleanup>}
    * @memberof CleanupsService
    */
-  async update(id: number, updateCleanupDto: UpdateCleanupDto): Promise<Cleanup> {
+  async update(
+    id: number,
+    updateCleanupDto: UpdateCleanupDto,
+  ): Promise<Cleanup> {
     const cleanup = await this.cleanupRepository.preload({
       id: id,
       ...updateCleanupDto,

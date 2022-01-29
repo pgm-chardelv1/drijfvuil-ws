@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -6,13 +10,12 @@ import { CitiesService } from '../cities/cities.service';
 import { CleanupsService } from '../cleanups/cleanups.service';
 import { CreateCleanupDto } from '../cleanups/dto/create-cleanup.dto';
 import { CreateReportDto } from './dto/create-report.dto';
-import { ImageUploadService } from '../files/files.service';
 import { ImagesService } from '../images/images.service';
 import { QuartersService } from '../quarters/quarters.service';
 import { UpdateReportDto } from './dto/update-report.dto';
 
 import { City } from '../cities/entities/city.entity';
-import { Image } from '../images/entities/image.entity';
+import { DbImage } from '../images/entities/image.entity';
 import { Quarter } from '../quarters/entities/quarter.entity';
 import { Report } from './entities/report.entity';
 
@@ -26,7 +29,6 @@ export class ReportsService {
     private readonly reportRepository: Repository<Report>,
     private readonly citiesService: CitiesService,
     private readonly cleanupsService: CleanupsService,
-    private readonly filesService: ImageUploadService,
     private readonly imagesService: ImagesService,
     private readonly quartersService: QuartersService,
   ) {}
@@ -51,7 +53,28 @@ export class ReportsService {
    */
   findAll(): Promise<Report[]> {
     return this.reportRepository.find({
-      relations: ['city', 'quarter', 'image'],
+      relations: ['city', 'quarter', 'dbImage'],
+    });
+  }
+
+  findAllByCity(cityId: number): Promise<Report[]> {
+    return this.reportRepository.find({
+      where: {
+        cityId: cityId,
+      },
+    });
+  }
+
+  findAllByCityAndQuarter(
+    cityId: number,
+    quarterId: number,
+  ): Promise<Report[]> {
+    return this.reportRepository.find({
+      where: {
+        cityId: cityId,
+        quarterId: quarterId,
+      },
+      relations: ['dbImage'],
     });
   }
 
@@ -61,7 +84,7 @@ export class ReportsService {
       throw new NotFoundException(`Report #${id} could not be found`);
     }
     return this.reportRepository.findOneOrFail(id, {
-      relations: ['city', 'quarter', 'image'],
+      relations: ['city', 'quarter', 'dbImage'],
     });
   }
 
@@ -90,7 +113,7 @@ export class ReportsService {
    */
   async remove(id: number): Promise<Report> {
     const report = await this.reportRepository.findOne(id, {
-      relations: ['city', 'quarter', 'image'],
+      relations: ['city', 'quarter', 'dbImage'],
     });
     await this.reportRepository.remove(report);
     return report;
@@ -105,7 +128,7 @@ export class ReportsService {
     let removedIds: Array<number>;
     ids.forEach(async (id) => {
       const report = await this.reportRepository.findOne(id, {
-        relations: ['city', 'image', 'quarter'],
+        relations: ['city', 'dbImage', 'quarter'],
       });
       await this.reportRepository.remove(report);
       removedIds.push(report.id);
@@ -139,20 +162,9 @@ export class ReportsService {
    * @returns {*} {Promise<Image>}
    * @memberof ReportsService
    */
-  async getImage(imageId: string): Promise<Image> {
+  async getImage(imageId: string): Promise<DbImage> {
     return await this.imagesService.findOne(imageId);
   }
-
-  /**
-   * Get a readable stream of the image file
-   *
-   * @param {string} imageId
-   * @return {*}
-   * @memberof ReportsService
-   */
-  /*   async getImageStream(imageId: string) {
-      return await this.filesService.getPrivateFile(imageId);
-    } */
 
   async handleFullCleanup(id: number): Promise<Report> {
     const report = await this.reportRepository.findOne({
@@ -168,7 +180,7 @@ export class ReportsService {
       };
       const cleanup = await this.cleanupsService.create(createCleanupInput);
       if (cleanup) {
-        const imgDeleted = await this.imagesService.remove(report.imageId);
+        const imgDeleted = await this.imagesService.remove(report.dbImageId);
         if (imgDeleted) {
           const deletedReport = await this.reportRepository.remove(report);
           return deletedReport;
@@ -176,6 +188,8 @@ export class ReportsService {
       }
     }
 
-    throw new NotFoundException(`Cleanup handling failed. Could not find report #${id}.`);
+    throw new NotFoundException(
+      `Cleanup handling failed. Could not find report #${id}.`,
+    );
   }
 }

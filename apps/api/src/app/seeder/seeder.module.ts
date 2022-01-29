@@ -4,7 +4,7 @@ import { CitiesModule } from '../cities/cities.module';
 
 import { City } from '../cities/entities/city.entity';
 import { FilesModule } from '../files/files.module';
-import { Image } from '../images/entities/image.entity';
+import { DbImage } from '../images/entities/image.entity';
 import { ImagesModule } from '../images/images.module';
 import { Quarter } from '../quarters/entities/quarter.entity';
 import { QuartersModule } from '../quarters/quarters.module';
@@ -18,7 +18,7 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     City,
-    Image,
+    DbImage,
     Quarter,
     Report,
     User,
@@ -28,7 +28,7 @@ import { UsersModule } from '../users/users.module';
     QuartersModule,
     ReportsModule,
     UsersModule,
-    TypeOrmModule.forFeature([City, Image, Quarter, Report, User]),
+    TypeOrmModule.forFeature([City, DbImage, Quarter, Report, User]),
   ],
   controllers: [SeederController],
   providers: [SeederService],

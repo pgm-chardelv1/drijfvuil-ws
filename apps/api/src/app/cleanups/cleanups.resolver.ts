@@ -1,5 +1,13 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { GqlThrottlerGuard } from '../auth/guards/gql-throttler.guard';
 import { City } from '../cities/entities/city.entity';
@@ -8,6 +16,7 @@ import { CleanupsService } from './cleanups.service';
 import { CreateCleanupDto } from './dto/create-cleanup.dto';
 import { UpdateCleanupDto } from './dto/update-cleanup.dto';
 import { Cleanup } from './entities/cleanup.entity';
+import { GetCleanupsArgs } from './entities/get-cleanups.args';
 
 /**
  * GraphQL resolver for handling Cleanup objects
@@ -43,8 +52,17 @@ export class CleanupsResolver {
    * @memberof CleanupsResolver
    */
   @Query(() => [Cleanup], { name: 'cleanups' })
-  findAll(): Promise<Cleanup[]> {
-    return this.cleanupsService.findAll();
+  findAll(@Args() args: GetCleanupsArgs): Promise<Cleanup[]> {
+    if (args.cityId && args.quarterId) {
+      return this.cleanupsService.findAllByCityAndQuarter(
+        args.cityId,
+        args.quarterId,
+      );
+    } else if (args.cityId) {
+      return this.cleanupsService.findAllByCity(args.cityId);
+    } else {
+      return this.cleanupsService.findAll();
+    }
   }
 
   /**
@@ -74,7 +92,10 @@ export class CleanupsResolver {
   updateCleanup(
     @Args('updateCleanupInput') updateCleanupInput: UpdateCleanupDto,
   ): Promise<Cleanup> {
-    return this.cleanupsService.update(updateCleanupInput.id, updateCleanupInput);
+    return this.cleanupsService.update(
+      updateCleanupInput.id,
+      updateCleanupInput,
+    );
   }
 
   /**

@@ -1,38 +1,44 @@
-query reportList {
-  reports {
+query reportList($cityId: Int, $quarterId: Int) {  
+  reports(cityId: $cityId, quarterId: $quarterId) {
     id
-    latLngTuple
-    city {
-      name
-    }
-    quarter {
-      quarter
-      id
-    }
-    imageId
-    extra
-    createdAt
     locationType
     litterType
+    latLngTuple
+    dbImage {
+      id
+      key
+    }
+    extra
+    quarter {
+      id
+      quarter
+    }
+    city {
+      id
+      name
+    }
   }
 }
 
 query report($id: Int!) {
   report(id: $id) {
     id
-    latLngTuple
-    city {
-      name
-    }
-    quarter {
-      quarter
-      id
-    }
-    imageId
-    extra
-    createdAt
     locationType
     litterType
+    latLngTuple
+    dbImage {
+      id
+      key
+    }
+    extra
+    quarter {
+      id
+      quarter
+    }
+    city {
+      id
+      name
+    }
   }
 }
 
@@ -66,15 +72,15 @@ mutation handleFullCleanup($id: Int!) {
 }
 
 
-query imageList {
-  images {
+query dbImageList {
+  dbImages {
     id,
     key,
   }
 }
 
 query image($id: String!) {
-  image(id: $id) {
+  dbImage(id: $id) {
     id,
     key,
   }
@@ -121,25 +127,31 @@ query city($id: Int!) {
   }
 }
 
-query cleanupList {
-  cleanups {
-    id,
-    createdAt,
-    type,
-    location,
-    cityId,
-    quarterId,
+query cleanupList($cityId: Int, $quarterId: Int) {
+  cleanups(cityId: $cityId, quarterId: $quarterId) {
+    id
+    quarter {
+      quarter
+      id
+    }
+    city {
+      name
+    }
+    location
   }
 }
 
 query cleanup($id: Int!) {
   cleanup(id: $id) {
-    id,
-    createdAt,
-    type,
-    location,
-    cityId,
-    quarterId,
+    id
+    quarter {
+      quarter
+      id
+    }
+    city {
+      name
+    }
+    location
   }
 }
 

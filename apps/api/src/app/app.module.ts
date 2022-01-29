@@ -33,7 +33,7 @@ import { UsersModule } from './users/users.module';
  */
 import { City } from './cities/entities/city.entity';
 import { Cleanup } from './cleanups/entities/cleanup.entity';
-import { Image } from './images/entities/image.entity';
+import { DbImage } from './images/entities/image.entity';
 import { Quarter } from './quarters/entities/quarter.entity';
 import { Report } from './reports/entities/report.entity';
 import { User } from './users/entities/user.entity';
@@ -68,7 +68,7 @@ import { User } from './users/entities/user.entity';
           username: configService.get<string>('DB_USERNAME', 'postgres'),
           password: configService.get<string>('DB_PASSWORD', 'toor'),
           database: configService.get<string>('DB_DATABASE_NAME', 'drijfvuil'),
-          entities: [City, Cleanup, Image, Quarter, Report, User],
+          entities: [City, Cleanup, DbImage, Quarter, Report, User],
           migrations: ['apps/api/migration/*{.ts,.js}'],
           migrationsTableName: 'migration',
           cli: {
