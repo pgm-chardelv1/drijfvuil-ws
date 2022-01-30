@@ -40,7 +40,7 @@ interface LeafletPopUpContentProps {
 export default function LeafletPopUpContent({
   report,
 }: LeafletPopUpContentProps): ReactElement {
-  const { url, loading, error } = useFetchImage(report.imageId);
+  const { url, loading, error } = useFetchImage(report.dbImageId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { setCurrentReport } = bindActionCreators(

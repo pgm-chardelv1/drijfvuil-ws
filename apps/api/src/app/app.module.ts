@@ -1,7 +1,7 @@
 /*
  * External imports
  */
-import { Module } from '@nestjs/common';
+import { CacheInterceptor, CacheModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -37,6 +37,7 @@ import { DbImage } from './images/entities/image.entity';
 import { Quarter } from './quarters/entities/quarter.entity';
 import { Report } from './reports/entities/report.entity';
 import { User } from './users/entities/user.entity';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 /**
  * Main App Module; declare all modules,
@@ -46,6 +47,7 @@ import { User } from './users/entities/user.entity';
  */
 @Module({
   imports: [
+    CacheModule.register(),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 2,

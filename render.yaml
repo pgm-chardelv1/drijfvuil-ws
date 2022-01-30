@@ -16,7 +16,7 @@ services:
   region: oregon
   plan: starter
   branch: main
-  buildCommand: npm i; npx nx build api
+  buildCommand: npm i; npx nx affected --target=build:api --parallel --max-parallel=1
   startCommand: yarn start api
 
   envVars:
@@ -57,7 +57,7 @@ services:
   # !TODO: Edit the name variable to your desired service name
   name: drijf
   env: static
-  buildCommand: npx nx build drijfvuil; npx nx run drijfvuil:pwa
+  buildCommand: npx nx affected --target=build:drijfvuil --parallel --max-parallel=2; npx nx run drijfvuil:pwa
   staticPublishPath: ./dist/apps/drijfvuil
 
 # The documentation

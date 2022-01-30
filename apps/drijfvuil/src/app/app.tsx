@@ -38,7 +38,9 @@ export function App() {
     dispatch,
   );
 
-  const { loading, error, data } = useQuery(ReportListDocument);
+  const { loading, error, data } = useQuery(ReportListDocument, {
+    pollInterval: 60000,
+  });
   const reports: Report[] = data?.reports?.map((r: Report) => r);
   if (!loading && !error) setReports(reports);
 

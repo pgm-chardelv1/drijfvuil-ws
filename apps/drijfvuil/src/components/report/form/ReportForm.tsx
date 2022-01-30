@@ -49,7 +49,7 @@ const validationSchema = yup.object({
   extra: yup.string().max(364),
   cityId: yup.number().integer().required(),
   quarterId: yup.number().integer().required(),
-  imageId: yup.string(),
+  dbImageId: yup.string(),
 });
 
 interface ReportFormProps {
@@ -88,7 +88,7 @@ export default function ReportForm({
   if (!currentReport) {
     initialValues = {
       latLngTuple: currentLocation,
-      imageId: '',
+      dbImageId: '',
       locationType: 'water',
       litterType: '',
       extra: '',
@@ -117,16 +117,16 @@ export default function ReportForm({
     const newImage = await createImage({
       variables: { createImageInput: createImageInput },
     });
-    const imageId = newImage.data.createImage.id;
-    return imageId;
+    const dbImageId = newImage.data.createImage.id;
+    return dbImageId;
   };
 
   const createNewReport = async (report: any, key: string, url: string) => {
-    const imageId = await createNewImage(key, url);
-    if (imageId) {
+    const dbImageId = await createNewImage(key, url);
+    if (dbImageId) {
       const editReport = {
         ...report,
-        imageId: imageId,
+        dbImageId: dbImageId,
       };
       const newReport = await createReport({
         variables: { createReportInput: editReport },
