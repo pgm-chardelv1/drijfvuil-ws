@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { AppTitle } from '..';
+import AppTitle from './AppTitle';
 
 interface AppArticleProps {
   title?: string;

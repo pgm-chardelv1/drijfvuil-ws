@@ -476,14 +476,14 @@ export type ReportListQueryVariables = Exact<{
 }>;
 
 
-export type ReportListQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } }> };
+export type ReportListQuery = { __typename?: 'Query', reports: Array<{ __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, dbImageId?: string | null | undefined, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } }> };
 
 export type ReportQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type ReportQuery = { __typename?: 'Query', report: { __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } } };
+export type ReportQuery = { __typename?: 'Query', report: { __typename?: 'Report', id: number, locationType: string, litterType?: string | null | undefined, latLngTuple: Array<number>, dbImageId?: string | null | undefined, extra?: string | null | undefined, dbImage?: { __typename?: 'DbImage', id: string, key: string } | null | undefined, quarter?: { __typename?: 'Quarter', id: number, quarter: string } | null | undefined, city: { __typename?: 'City', id: number, name: string } } };
 
 export type CreateReportMutationVariables = Exact<{
   createReportInput: CreateReportDto;
@@ -579,6 +579,7 @@ export const ReportListDocument = gql`
     locationType
     litterType
     latLngTuple
+    dbImageId
     dbImage {
       id
       key
@@ -631,6 +632,7 @@ export const ReportDocument = gql`
     locationType
     litterType
     latLngTuple
+    dbImageId
     dbImage {
       id
       key

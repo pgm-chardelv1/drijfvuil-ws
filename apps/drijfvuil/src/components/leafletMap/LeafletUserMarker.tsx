@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { Icon, LatLngExpression } from 'leaflet';
 import { Marker } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
 
 import addReport from '../../assets/markers/add-report.png';
 import iconShadow from '../../assets/markers/marker-shadow.png';

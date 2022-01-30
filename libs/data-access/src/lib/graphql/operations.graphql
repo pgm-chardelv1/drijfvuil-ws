@@ -4,6 +4,7 @@ query reportList($cityId: Int, $quarterId: Int) {
     locationType
     litterType
     latLngTuple
+    dbImageId
     dbImage {
       id
       key
@@ -26,6 +27,7 @@ query report($id: Int!) {
     locationType
     litterType
     latLngTuple
+    dbImageId
     dbImage {
       id
       key

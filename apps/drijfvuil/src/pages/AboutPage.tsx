@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
-import defaultStyles from '../config/styles';
 import * as Paths from '../routes';
+import defaultStyles from '../config/styles';
 import { AppArticle, AppBackButton, Footer, Main } from '../components';
 
 function AboutPage(): ReactElement {

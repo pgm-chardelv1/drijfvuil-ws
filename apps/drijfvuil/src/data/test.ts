@@ -1,5 +1,3 @@
-import { Report } from '../interfaces';
-
 export const testReport = [
   {
     location: [51.1489729, 3.51874],
