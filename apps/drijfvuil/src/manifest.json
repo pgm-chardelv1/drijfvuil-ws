@@ -21,7 +21,7 @@
           "type": "image/png"
       }
     ],
-    "start_url": "http://localhost:4200",
+    "start_url": "https://drijf.onrender.com",
     "id": "/"
   }
   
