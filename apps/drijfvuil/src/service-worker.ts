@@ -106,7 +106,7 @@ registerRoute(
 
 registerRoute(
   /^https:\/\/[abc]\.tile\.openstreetmap\.fr\/hot\/\d{2}\/\d{5}\/\d{5}\.png/,
-/*   new CacheFirst({
+  /*   new CacheFirst({
     cacheName: 'openstreetmap-tiles',
     plugins: [
       new CacheableResponsePlugin({
@@ -143,7 +143,10 @@ registerRoute(
 );
 
 // API access is only supported while online
-registerRoute(/^https:\/\/drijfvuil-api\.onrender\.com\/graphql|files\/upload|files/, new NetworkOnly());
+registerRoute(
+  /^https:\/\/drijf-api\.onrender\.com\/graphql|files\/upload|files/,
+  new NetworkOnly(),
+);
 
 // -------------------------------------------------------------
 // Messages

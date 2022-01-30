@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const BASE_URL = 'https://drijfvuil-api.onrender.com/files/upload';
+const BASE_URL = 'https://drijf-api.onrender.com/files/upload';
 
 /**
  * Helper function to handle renaming files
