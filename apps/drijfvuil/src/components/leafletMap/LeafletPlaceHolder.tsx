@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoadingScreen } from '..';
+import { LoadingScreen } from '../common';
 
 const LeafletPlaceHolder: React.FC = () => {
   return (

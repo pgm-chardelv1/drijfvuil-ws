@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import defaultStyles from '../../../config/styles';
 import * as paths from '../../../routes';
-import { AppBackButton, AppButton, DoneAnimation, LoadingAnimation } from '../..';
+import { AppButton, DoneAnimation, LoadingAnimation } from '../../common';
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -26,7 +26,10 @@ interface FormUploadingModalProps {
   setIsUploading: (e: boolean | null) => void;
 }
 
-const FormUploadingModal = ({ isUploading, setIsUploading }: FormUploadingModalProps) => {
+const FormUploadingModal = ({
+  isUploading,
+  setIsUploading,
+}: FormUploadingModalProps) => {
   const navigator = useNavigate();
   const handleOnClick = () => {
     setIsUploading(null);

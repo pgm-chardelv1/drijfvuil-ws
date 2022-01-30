@@ -1,29 +1,31 @@
-import { ReactElement, useEffect, useState } from 'react';
+import * as yup from 'yup';
 import styled from 'styled-components';
 import { Form, Formik } from 'formik';
-import * as yup from 'yup';
-
-import defaultStyles from '../../../config/styles';
-import * as paths from '../../../routes';
-import FormRadioSet from './formRadioSet/FormRadioSet';
-import FormInputSet from './FormInputSet';
-import FormTextAreaSet from './FormTextAreaSet';
-import { AppButton } from '../../common';
-import { Report } from '../../../interfaces';
-import { actionCreators } from '../../../redux';
+import { ReactElement, useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../../redux/reducers';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+
+import * as paths from '../../../routes';
+import {
+  AppButton,
+  FormImageInputModal,
+  FormInputSet,
+  FormRadioSet,
+  FormTextAreaSet,
+  FormUploadingModal,
+} from '../../index';
+import defaultStyles from '../../../config/styles';
 import {
   CreateImageDocument,
   CreateReportDocument,
   CreateReportMutationFn,
 } from '@drijfvuil-ws/data-access';
+import { Report } from '../../../interfaces';
+import { RootState } from '../../../redux/reducers';
+import { actionCreators } from '../../../redux';
 import { useUploadFile } from '../../../hooks';
-import FormUploadingModal from './FormUploadingModal';
-import FormImageInputModal from './formImageInputModal/FormImageInputModal';
 
 const Container = styled.section`
   padding: 1.125rem 2rem;

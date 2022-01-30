@@ -1,11 +1,7 @@
 import React from 'react';
 import { Polygon } from 'react-leaflet';
 
-import { Quarter, data } from '@drijfvuil-ws/data';
-
-interface Props {
-  data: [];
-}
+import { data } from '@drijfvuil-ws/data';
 
 const LeafletPolygons: React.FC = () => {
   const options = [

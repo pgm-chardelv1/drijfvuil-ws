@@ -6,7 +6,12 @@ import { bindActionCreators } from 'redux';
 
 import * as paths from '../.././../routes';
 import { Report } from '../../../interfaces';
-import { AppButton, AppTitle, ImageContainer, LoadingAnimation } from '../../common';
+import {
+  AppButton,
+  AppTitle,
+  ImageContainer,
+  LoadingAnimation,
+} from '../../common';
 import defaultStyles from '../../../config/styles';
 import TypeList from './TypeList';
 
@@ -32,7 +37,9 @@ interface LeafletPopUpContentProps {
   report: Report;
 }
 
-export default function LeafletPopUpContent({ report }: LeafletPopUpContentProps): ReactElement {
+export default function LeafletPopUpContent({
+  report,
+}: LeafletPopUpContentProps): ReactElement {
   const { url, loading, error } = useFetchImage(report.imageId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,7 +58,9 @@ export default function LeafletPopUpContent({ report }: LeafletPopUpContentProps
       <ImageContainer height="17.5rem">
         {loading && !error && <LoadingAnimation />}
 
-        {url && !error && <img src={url} alt={'Report ' + report.id} loading="lazy" />}
+        {url && !error && (
+          <img src={url} alt={'Report ' + report.id} loading="lazy" />
+        )}
         {error && console.error(error)}
       </ImageContainer>
 

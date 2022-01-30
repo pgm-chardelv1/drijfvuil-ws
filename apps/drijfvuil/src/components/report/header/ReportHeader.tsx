@@ -12,12 +12,13 @@ const Container = styled(ImageContainer)`
   justify-content: center;
   align-items: center;
 `;
-
 interface ReportHeaderProps {
   imageUrl: string | undefined;
 }
 
-export default function ReportHeader({ imageUrl }: ReportHeaderProps): ReactElement {
+export default function ReportHeader({
+  imageUrl,
+}: ReportHeaderProps): ReactElement {
   const [mapActive, setMapActive] = useState<boolean>(false);
 
   let url;

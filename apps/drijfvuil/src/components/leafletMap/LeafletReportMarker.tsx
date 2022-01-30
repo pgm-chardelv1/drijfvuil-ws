@@ -1,9 +1,8 @@
 import { Icon, LatLngExpression } from 'leaflet';
-import React from 'react';
 import { Marker } from 'react-leaflet';
+
 import { Report } from '../../interfaces';
 import LeafletPopUp from './leafletPopup/LeafletPopUp';
-
 import reportGreen from '../../assets/markers/report-green.png';
 import iconShadow from '../../assets/markers/marker-shadow.png';
 interface LeafletMarkerProps {

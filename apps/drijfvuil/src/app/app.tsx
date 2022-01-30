@@ -10,7 +10,7 @@ import { AboutPage, HomePage, LegalPage, ReportPage } from '../pages';
 import { actionCreators } from '../redux';
 import { ReportListDocument } from '@drijfvuil-ws/data-access';
 import { useQuery } from '@apollo/client';
-import { LoadingScreen } from '../components';
+import { LoadingScreen } from '../components/common';
 import { Report } from '../interfaces';
 
 const StyledApp = styled.div`
