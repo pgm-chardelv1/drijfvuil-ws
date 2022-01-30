@@ -16,7 +16,7 @@ services:
   region: oregon
   plan: starter
   branch: main
-  buildCommand: npm i; npx nx build api
+  buildCommand: npm i; npx nx affected --target=build:api --parallel --max-parallel=1
   startCommand: yarn start api
 
   envVars:
