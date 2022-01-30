@@ -3,8 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 import defaultStyles from '../../config/styles';
 
 const AppGlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@600&display=swap'); */
 
 * {
   margin: 0;
