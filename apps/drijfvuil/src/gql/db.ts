@@ -1,7 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 
 const httpLink = createHttpLink({
-  uri: 'https://drijfvuil-api.onrender.com/graphql',
+  uri: 'https://drijf-api.onrender.com/graphql',
 });
 
 const client = new ApolloClient({

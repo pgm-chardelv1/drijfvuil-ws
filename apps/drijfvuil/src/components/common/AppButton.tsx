@@ -18,7 +18,8 @@ const AppButton = styled.button<{
   border-radius: 8px;
   color: ${defaultStyles.color.white};
   text-transform: uppercase;
-  font-size: ${(props) => (props.fontSize ? props.fontSize : defaultStyles.font.size.xs)};
+  font-size: ${(props) =>
+    props.fontSize ? props.fontSize : defaultStyles.font.size.xs};
   ${(props) => (props.fontFamily ? `font-family:` + props.fontFamily : '')}
 `;
 

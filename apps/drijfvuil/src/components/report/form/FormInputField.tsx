@@ -1,4 +1,3 @@
-import { Field } from 'formik';
 import styled from 'styled-components';
 
 import defaultStyles from '../../../config/styles';

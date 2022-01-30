@@ -1,14 +1,14 @@
-import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { StrictMode } from 'react';
+import { store } from './redux';
 
 import App from './app/app';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import { AppGlobalStyle } from './components';
-import { Provider } from 'react-redux';
-import { store } from './redux';
+import AppGlobalStyle from './components/styles/AppGlobalStyle';
 import client from './gql/db';
-import { ApolloProvider } from '@apollo/client';
 
 ReactDOM.render(
   <StrictMode>

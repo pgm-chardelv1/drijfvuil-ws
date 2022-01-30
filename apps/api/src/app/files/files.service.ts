@@ -25,14 +25,19 @@ export class ImageUploadService {
    * @return {*}
    * @memberof ImageUploadService
    */
-  async fileUpload(@Req() req: Request, @Res() res: Response): Promise<Response> {
+  async fileUpload(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<Response> {
     try {
       this.upload(req, res, async (error) => {
         const mimeType: string = req?.files[0]?.mimetype;
         // Check if the file has the correct mimetype, starting with image
         if (mimeType && mimeType.toString().startsWith('image')) {
           if (error) {
-            return res.status(404).json(`Failed to upload image file: ${error}`);
+            return res
+              .status(404)
+              .json(`Failed to upload image file: ${error}`);
           }
           const img = {
             message: `Successfully uploaded the image! Be sure to create an image in the DB.`,
@@ -45,7 +50,9 @@ export class ImageUploadService {
           // Return HTTP code 415: Unsupported Media Type
           return res
             .status(415)
-            .json(`Upload failed. File is not an image or file size exceeds 5MB.`);
+            .json(
+              `Upload failed. File is not an image or file size exceeds 5MB.`,
+            );
         }
       });
     } catch (error) {

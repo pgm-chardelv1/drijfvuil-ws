@@ -10,7 +10,7 @@ import { AboutPage, HomePage, LegalPage, ReportPage } from '../pages';
 import { actionCreators } from '../redux';
 import { ReportListDocument } from '@drijfvuil-ws/data-access';
 import { useQuery } from '@apollo/client';
-import { LoadingScreen } from '../components';
+import { LoadingScreen } from '../components/common';
 import { Report } from '../interfaces';
 
 const StyledApp = styled.div`
@@ -38,7 +38,9 @@ export function App() {
     dispatch,
   );
 
-  const { loading, error, data } = useQuery(ReportListDocument);
+  const { loading, error, data } = useQuery(ReportListDocument, {
+    pollInterval: 60000,
+  });
   const reports: Report[] = data?.reports?.map((r: Report) => r);
   if (!loading && !error) setReports(reports);
 

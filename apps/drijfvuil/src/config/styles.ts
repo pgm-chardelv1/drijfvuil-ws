@@ -22,7 +22,7 @@ export default {
     },
     family: {
       fira: `'Fira Sans', sans-serif`,
-      bebas: `'Bebas Neue'`,
+      bebas: `'Bebas Neue', sans-serif`,
     },
   },
   gradient: {

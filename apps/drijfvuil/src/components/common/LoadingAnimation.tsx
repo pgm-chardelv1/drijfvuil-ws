@@ -18,7 +18,9 @@ interface LoadingAnimationProps {
   size?: number;
 }
 
-const LoadingAnimation = ({ size = 100 }: LoadingAnimationProps): ReactElement => {
+const LoadingAnimation = ({
+  size = 100,
+}: LoadingAnimationProps): ReactElement => {
   const defaultOptions = {
     loop: true,
     autoplay: true,

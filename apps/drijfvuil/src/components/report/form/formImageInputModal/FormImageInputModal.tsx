@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import FormImageInput from './FormImageInput';
 import defaultStyles from '../../../../config/styles';
-import { AppButton } from '../../..';
 
 const ModalContainer = styled.div<{ visible: boolean }>`
   position: absolute;
@@ -37,15 +36,6 @@ const FormImageInputModal = ({
   return (
     <ModalContainer visible={visible}>
       <Field as={FormImageInput} handleCapture={handleCapture} />
-      {/* <AppButton
-        type="button"
-        width="50%"
-        fontFamily={defaultStyles.font.family.fira}
-        fontSize="1.5rem"
-        onClick={setVisibility}
-      >
-        skip
-      </AppButton> */}
     </ModalContainer>
   );
 };
