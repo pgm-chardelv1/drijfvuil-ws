@@ -32,7 +32,7 @@ jobs:
           node-version: '14'
       - run: npm install
       - run: npx nx affected --target=lint --fix --parallel --max-parallel=2
-      - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx nx affected --target=build --parallel --max-parallel=2
       - run: npx nx affected --target=generate-docs --parallel --max-parallel=2
   pr:
     runs-on: ubuntu-latest
