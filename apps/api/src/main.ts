@@ -18,7 +18,7 @@ import { AppModule } from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: ['http://localhost:4200', 'https://drijfvuil.onrender.com'],
+      origin: ['http://localhost:4200', 'https://drijf.onrender.com'],
       credentials: true,
     },
   });

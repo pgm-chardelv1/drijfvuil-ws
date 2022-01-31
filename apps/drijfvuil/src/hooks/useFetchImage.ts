@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetPresignedImageUrlMutation } from '@drijfvuil-ws/data-access';
 
 const useFetchImage = (id: string) => {

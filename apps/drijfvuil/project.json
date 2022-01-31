@@ -32,19 +32,12 @@
               "with": "apps/drijfvuil/src/environments/environment.prod.ts"
             }
           ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
+          "optimization": false,
+          "outputHashing": "none" ,
+          "sourceMap": true,
+          "namedChunks": true,
           "extractLicenses": true,
-          "vendorChunk": false,
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "5mb"
-            }
-          ]
+          "vendorChunk": false
         }
       }
     },
@@ -81,7 +74,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "rimraf ./dist/apps/drijfvuil/service-worker.js && webpack --config ./apps/drijfvuil/webpack.prod.config.js --progress && node ./apps/drijfvuil/workbox-build-inject.js"
+        "command": "rimraf ./dist/apps/drijfvuil/service-worker.js && webpack --config ./apps/drijfvuil/webpack.prod.config.js && node ./apps/drijfvuil/workbox-build-inject.js"
       }
     },
     "generate-docs": {

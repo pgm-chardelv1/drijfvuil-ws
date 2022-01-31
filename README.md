@@ -1,3 +1,5 @@
+[![Distributed Task Execution](https://github.com/pgm-chardelv1/drijfvuil-ws/actions/workflows/deploy.yml/badge.svg?branch=main&event=workflow_run)](https://github.com/pgm-chardelv1/drijfvuil-ws/actions/workflows/deploy.yml)
+
 # StudioGdmPgm Workspace - Drijfvuil
 
 ## Release v1.0.0 Alpha: What's Changed
