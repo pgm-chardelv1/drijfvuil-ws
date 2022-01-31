@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { LeafletMap, LoadingScreen, MainNavigation } from '../components';
 

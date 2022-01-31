@@ -65,8 +65,6 @@ services:
     source: /*
     destination: /index.html
   envVars:
-  - key: NODE_ENV
-    value: production
   - key: PUBLIC_URL
     value: .
 
