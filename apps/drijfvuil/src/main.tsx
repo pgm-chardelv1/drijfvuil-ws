@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { store } from './redux';
 
 import App from './app/app';
