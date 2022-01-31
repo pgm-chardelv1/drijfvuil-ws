@@ -37,7 +37,7 @@
           "sourceMap": true,
           "namedChunks": true,
           "extractLicenses": true,
-          "vendorChunk": true,
+          "vendorChunk": true
         }
       }
     },
