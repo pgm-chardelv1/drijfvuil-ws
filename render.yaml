@@ -57,15 +57,13 @@ services:
   # !TODO: Edit the name variable to your desired service name
   name: drijf
   env: static
-  buildCommand: npx nx build:drijfvuil; npx nx run drijfvuil:pwa
+  buildCommand: npm i; npx nx build:drijfvuil; npx nx run drijfvuil:pwa
   staticPublishPath: ./dist/apps/drijfvuil
-
   routes: 
   # rewrite
   - type: rewrite
     source: /*
     destination: /index.html
-
   envVars:
   - key: NODE_ENV
     value: production
