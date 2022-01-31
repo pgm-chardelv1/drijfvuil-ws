@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon, LatLngExpression } from 'leaflet';
 import { Marker } from 'react-leaflet';
